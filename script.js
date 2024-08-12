@@ -13,12 +13,12 @@ window.addEventListener('load', function() {
     allow_sound = false;
     musicButton.addEventListener('click', () => {
         if (backgroundMusic.paused) {
-            //backgroundMusic.play();
+            backgroundMusic.play();
             musicButton.textContent = '🔊';
             allow_sound = true;
         } 
         else {
-            //backgroundMusic.pause();
+            backgroundMusic.pause();
             musicButton.textContent = '🔇';
             allow_sound = false;
         }
@@ -26,13 +26,17 @@ window.addEventListener('load', function() {
 
     function playPopSound() {
         if(allow_sound) {
-            popSound.play();
+            setTimeout(() => {
+                popSound.play();
+            }, 200);
         }
     }
 
     function playSplashSound() {
         if(allow_sound) {
-            splashSound.play();
+            setTimeout(() => {
+                splashSound.play();
+            }, 500);
         }
     }
 
