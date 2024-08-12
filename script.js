@@ -34,6 +34,7 @@ window.addEventListener('load', function() {
 
     function playSplashSound() {
         if(allow_sound) {
+            backgroundMusic.pause();
             setTimeout(() => {
                 splashSound.play();
             }, 500);
