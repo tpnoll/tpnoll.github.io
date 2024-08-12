@@ -24,6 +24,14 @@ window.addEventListener('load', function() {
         }
     });
 
+    // Restart sound if its ended
+    backgroundMusic.addEventListener('ended', () => {
+        if (allow_sound) { 
+          backgroundMusic.currentTime = 0; 
+          backgroundMusic.play(); 
+        }
+      });    
+
     function playPopSound() {
         if(allow_sound) {
                 popSound.play();
