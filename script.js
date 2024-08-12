@@ -13,12 +13,12 @@ window.addEventListener('load', function() {
     allow_sound = false;
     musicButton.addEventListener('click', () => {
         if (backgroundMusic.paused) {
-            backgroundMusic.play();
+            //backgroundMusic.play();
             musicButton.textContent = '🔊';
             allow_sound = true;
         } 
         else {
-            backgroundMusic.pause();
+            //backgroundMusic.pause();
             musicButton.textContent = '🔇';
             allow_sound = false;
         }
