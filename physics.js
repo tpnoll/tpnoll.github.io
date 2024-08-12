@@ -87,8 +87,16 @@ canvas_height = null;
 
 // Checks if a bubble should be in the cup
 function check_incup(object, cup, object_array, spoon) {
-    if(object.inspoon && object.y < 300) {
+   
+    // In order to go in the cup the bubble must be in the spoon, above 300, and part of the order
+    if((object.inspoon && object.y < 300) && cup.combination.includes(object.bubble_type + 1)) {
         
+        // Remove the bubble from the cup combination
+        const comb_index = cup.combination.indexOf(object.bubble_type + 1);
+        if(comb_index > -1) {
+            cup.combination.splice(comb_index, 1);
+        }
+
         object.incup = true;
         cup.number_of_pearls++;
 
@@ -162,7 +170,6 @@ function handle_collision(object_array) {
             if(check_bubble_collision(object_array[i], object_array[j])) {
                 split_bubbles(object_array[i], object_array[j]);
             }
-
         }
     }
 }

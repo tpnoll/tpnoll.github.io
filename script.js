@@ -211,6 +211,29 @@ window.addEventListener('load', function() {
         }
     }
 
+    // Order board
+    class OrderBoard {
+        constructor(gameWidth, gameHeight, imageId, y) {
+            this.gameWidth = gameWidth;
+            this.gameHeight = gameHeight;
+            this.width = 60;
+            this.height = 60;
+            this.x = 40;
+            this.y = y;
+            this.image = document.getElementById(imageId);
+        }
+
+        draw(context) {
+            context.fillstyle = 'white';
+            context.drawImage(this.image, 0, 0, this.image.width, this.image.height, this.x, this.y, this.width, this.height);
+        }
+
+        update(imageId) {
+            this.image = document.getElementById(imageId);
+        }
+    }
+
+
     // Defines a generic bubble object
     class Bubble {
         constructor(gameWidth, gameHeight, imageId, bubble_type) {
@@ -230,10 +253,6 @@ window.addEventListener('load', function() {
             context.fillstyle = 'white';
             context.drawImage(this.image, 0, 0, this.image.width, this.image.height, this.x, this.y, this.width, this.height);
         }
-
-        update(input) {
-
-        }
     }
 
     // Random number function
@@ -252,6 +271,11 @@ window.addEventListener('load', function() {
 
     const input = new InputHandler();
 
+    // [Blue, Orange, Pink, Purple]
+    const full_bubbles = ["bubble_blue_full", "bubble_orange_full", "bubble_pink_full", "bubble_purple_full"];
+    const mushy_bubbles = ["bubble_blue_mushy", "bubble_orange_mushy", "bubble_pink_mushy", "bubble_purple_mushy"];
+    const broken_bubbles = ["bubble_blue_broken", "bubble_orange_broken", "bubble_pink_broken", "bubble_purple_broken"];
+
     // Initialize and draw a spoon
     const spoon = new Spoon(canvas.width, canvas.height);
     const spoon_hitbox = new Spoon_hitbox(canvas.width, canvas.height);
@@ -265,18 +289,23 @@ window.addEventListener('load', function() {
     new_cup = create_cup(4);
     console.log(new_cup.combination);
 
+    // Inititalize the order board
+    const board1 = new OrderBoard(canvas.width, canvas.height, full_bubbles[new_cup.combination[0] - 1], 200);
+    const board2 = new OrderBoard(canvas.width, canvas.height, full_bubbles[new_cup.combination[1] - 1], 275);
+    const board3 = new OrderBoard(canvas.width, canvas.height, full_bubbles[new_cup.combination[2] - 1], 350);
+
     function replace_cup() {
         new_cup = create_cup(4);
         console.log(new_cup.combination);
+
+        // Update the board
+        board1.update(full_bubbles[new_cup.combination[0] - 1]);
+        board2.update(full_bubbles[new_cup.combination[1] - 1]);
+        board3.update(full_bubbles[new_cup.combination[2] - 1]);
     }
 
     // Create an array to hold all active bubbles
     bubble_array = []
-
-    // [Blue, Orange, Pink, Purple]
-    const full_bubbles = ["bubble_blue_full", "bubble_orange_full", "bubble_pink_full", "bubble_purple_full"];
-    const mushy_bubbles = ["bubble_blue_mushy", "bubble_orange_mushy", "bubble_pink_mushy", "bubble_purple_mushy"];
-    const broken_bubbles = ["bubble_blue_broken", "bubble_orange_broken", "bubble_pink_broken", "bubble_purple_broken"];
 
     // Function called periodically to create new bubbles
     function spawn_bubbles() {
@@ -325,6 +354,11 @@ window.addEventListener('load', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         background.draw(ctx);
         water.draw(ctx);
+
+        // Draw the board
+        board1.draw(ctx);
+        board2.draw(ctx);
+        board3.draw(ctx);
 
         // Draw the cup
         cup.draw(ctx);
