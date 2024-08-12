@@ -26,18 +26,15 @@ window.addEventListener('load', function() {
 
     function playPopSound() {
         if(allow_sound) {
-            setTimeout(() => {
                 popSound.play();
-            }, 200);
         }
     }
 
     function playSplashSound() {
         if(allow_sound) {
-            backgroundMusic.pause();
-            setTimeout(() => {
+                backgroundMusic.pause();
                 splashSound.play();
-            }, 500);
+                backgroundMusic.play();
         }
     }
 
