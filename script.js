@@ -32,9 +32,7 @@ window.addEventListener('load', function() {
 
     function playSplashSound() {
         if(allow_sound) {
-                backgroundMusic.pause();
                 splashSound.play();
-                backgroundMusic.play();
         }
     }
 
