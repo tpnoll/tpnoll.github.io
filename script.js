@@ -9,6 +9,7 @@ window.addEventListener('load', function() {
     const backgroundMusic = this.document.getElementById('backgroundMusic');
     const popSound = this.document.getElementById('popsound');
     const splashSound = this.document.getElementById('splashsound');
+    const ringSound = this.document.getElementById('ring');
 
     allow_sound = false;
     musicButton.addEventListener('click', () => {
@@ -34,13 +35,19 @@ window.addEventListener('load', function() {
 
     function playPopSound() {
         if(allow_sound) {
-                popSound.play();
+            popSound.play();
         }
     }
 
     function playSplashSound() {
         if(allow_sound) {
-                splashSound.play();
+            splashSound.play();
+        }
+    }
+
+    function playRingSound() {
+        if(allow_sound) {
+            ringSound.play();
         }
     }
 
@@ -83,11 +90,9 @@ window.addEventListener('load', function() {
 
             // Event listeners for mouse
             window.addEventListener('mousedown', (e) => {
-                //console.log(e);
                 this.mouseDown = e.buttons;
             });
             window.addEventListener('mouseup', (e) => {
-                //console.log(e);
                 this.mouseDown = e.buttons;
             });
             window.addEventListener('mousemove', (e) => {
@@ -146,16 +151,19 @@ window.addEventListener('load', function() {
             if(this.flag1 && this.number_of_pearls == 1) {
                 this.image = document.getElementById("cup1");
                 playSplashSound();
+                update_board();
                 this.flag1 = false;
             }
             else if(this.flag2 && this.number_of_pearls == 2) {
                 this.image = document.getElementById("cup2");
                 playSplashSound();
+                update_board();
                 this.flag2 = false;
             }
             else if(this.flag3 && this.number_of_pearls == 3) {
                 this.image = document.getElementById("cup3");
                 playSplashSound();
+                update_board();
                 this.flag3 = false;
             }
         }
@@ -166,6 +174,7 @@ window.addEventListener('load', function() {
                 return false;
             }
             else if(this.x >= this.gameWidth) {
+                playRingSound();
                 return true;
             }
             else {
@@ -280,7 +289,7 @@ window.addEventListener('load', function() {
     const input = new InputHandler();
 
     // [Blue, Orange, Pink, Purple]
-    const full_bubbles = ["bubble_blue_full", "bubble_orange_full", "bubble_pink_full", "bubble_purple_full"];
+    const full_bubbles = ["bubble_blue_full", "bubble_orange_full", "bubble_pink_full", "bubble_purple_full", "check"];
     const mushy_bubbles = ["bubble_blue_mushy", "bubble_orange_mushy", "bubble_pink_mushy", "bubble_purple_mushy"];
     const broken_bubbles = ["bubble_blue_broken", "bubble_orange_broken", "bubble_pink_broken", "bubble_purple_broken"];
 
@@ -295,31 +304,39 @@ window.addEventListener('load', function() {
     // Initialize the first cup
     cup_done = false;
     new_cup = create_cup(4);
-    console.log(new_cup.combination);
 
     // Inititalize the order board
     const board1 = new OrderBoard(canvas.width, canvas.height, full_bubbles[new_cup.combination[0] - 1], 200);
     const board2 = new OrderBoard(canvas.width, canvas.height, full_bubbles[new_cup.combination[1] - 1], 275);
     const board3 = new OrderBoard(canvas.width, canvas.height, full_bubbles[new_cup.combination[2] - 1], 350);
 
-    function replace_cup() {
-        new_cup = create_cup(4);
-        console.log(new_cup.combination);
-
-        // Update the board
+    function update_board() {
         board1.update(full_bubbles[new_cup.combination[0] - 1]);
         board2.update(full_bubbles[new_cup.combination[1] - 1]);
-        board3.update(full_bubbles[new_cup.combination[2] - 1]);
+        board3.update(full_bubbles[new_cup.combination[2] - 1]);  
+    }
+
+    function replace_cup() {
+        new_cup = create_cup(4);
+
+        // Update the board
+        update_board();
     }
 
     // Create an array to hold all active bubbles
     bubble_array = []
 
     // Function called periodically to create new bubbles
+    last_bubble = -1;
     function spawn_bubbles() {
-        bubble_type = getRandomInt(0,3);
+        // Choose a random bubble but no repeats
+        do {
+            bubble_type = getRandomInt(0,3);
+        }while(bubble_type == last_bubble)
+        console.log("Last: ", last_bubble, " New: ", bubble_type);   
+        last_bubble = bubble_type;
+
         bubble_array.push(new Bubble(canvas.width, canvas.height, full_bubbles[bubble_type], bubble_type));
-        console.log(bubble_array.length);
     }
 
     function delete_bubbles() {
@@ -344,14 +361,14 @@ window.addEventListener('load', function() {
                 spoon_hitbox.occupied = 0;
                 if(index > -1) {
                     bubble_array.splice(index, 1);
-                    playPopSound()
+                    playPopSound();
                 }
             }
         }
     }
 
-    const spawnInterval = this.setInterval(spawn_bubbles, 5000);
-    const decayInterval = this.setInterval(delete_bubbles, 2000);
+    const spawnInterval = this.setInterval(spawn_bubbles, 3000); //5000
+    const decayInterval = this.setInterval(delete_bubbles, 1000); //2000
 
     // Initialize physics
     init_physics(canvas.width, canvas.height);

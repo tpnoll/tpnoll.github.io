@@ -94,7 +94,8 @@ function check_incup(object, cup, object_array, spoon) {
         // Remove the bubble from the cup combination
         const comb_index = cup.combination.indexOf(object.bubble_type + 1);
         if(comb_index > -1) {
-            cup.combination.splice(comb_index, 1);
+            //cup.combination.splice(comb_index, 1);
+            cup.combination[comb_index] = 5;
         }
 
         object.incup = true;

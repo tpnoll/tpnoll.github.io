@@ -35,7 +35,7 @@ body {
     display: none;
 }
 
-#cup0, #cup1, #cup2, #cup3, #bubble_blue_full, #bubble_orange_full, #bubble_pink_full, #bubble_purple_full, #bubble_blue_mushy, #bubble_orange_mushy, #bubble_pink_mushy, #bubble_purple_mushy, #bubble_blue_broken, #bubble_orange_broken, #bubble_pink_broken, #bubble_purple_broken {
+#check, #cup0, #cup1, #cup2, #cup3, #bubble_blue_full, #bubble_orange_full, #bubble_pink_full, #bubble_purple_full, #bubble_blue_mushy, #bubble_orange_mushy, #bubble_pink_mushy, #bubble_purple_mushy, #bubble_blue_broken, #bubble_orange_broken, #bubble_pink_broken, #bubble_purple_broken {
     display: none;
     z-index: 2; 
 }
