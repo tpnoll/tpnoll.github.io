@@ -89,6 +89,9 @@ window.addEventListener('load', function() {
                 this.mouseLocation[0] = (e.clientX * (canvas.width/(rect.right - rect.left)) - rect.left * (canvas.height/(rect.bottom - rect.top)));
                 this.mouseLocation[1] = (e.clientY * (canvas.height/(rect.bottom - rect.top)) - rect.top * (canvas.height/(rect.bottom - rect.top)));
             });
+            window.addEventListener('wheel', (e) => {
+                this.wheel_direction = e.deltaY;
+            });
 
             // Event listeners for touchscreen
             window.addEventListener('touchstart', (e) => {
@@ -120,26 +123,11 @@ window.addEventListener('load', function() {
     // Initialize background and water
     const background = new Background(canvas.width, canvas.height);
 
-    // TODO:
-    /*
-    1. GameMap class should hold all of the tiles
-    2. Generate the map
-        a. Procedurally or from a file?
-    3. Different types of tiles
-        a. (Water, Mountain, Forest, Resource, ???)
-    */
-    // Initialize and draw a hexagon
-
-
-
-    tile_array = []
-    for (let y = 0; y < 20; y++) {
-        for (let x = 0; x < 30; x++) {
-            new_tile = new GameTile(canvas.width, canvas.height, 0, 0);
-            new_tile.set_tile_position(x, y);
-            tile_array.push(new_tile);
-        }
-    }
+    map0 = new GameMap(2);
+    
+    // TODO: Pass only canvas width and height
+    map0.generate_map(canvas);
+    map0.draw_terrain();
 
     // Initialize physics
     init_physics(canvas.width, canvas.height);
@@ -150,16 +138,17 @@ window.addEventListener('load', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         //background.draw(ctx);
 
-
-
-
         // Calculate physics
         //physics_iterate(bubble_array, spoon_hitbox, cup);
         //physics_draw(bubble_array, ctx);
 
-        // physics_draw just draws every object in an array so I can hijack it for this
-        // Draw the hexagons
-        physics_draw(tile_array, ctx);
+        // Draw the tiles in the game map
+        for(const tile of map0.tile_array) {
+            tile.draw(ctx, map0.tile_scale);
+        }
+
+        // Update the game map
+        map0.update(input);
 
         requestAnimationFrame(animate);
     }
