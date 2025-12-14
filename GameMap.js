@@ -5,6 +5,7 @@ class GameMap {
     constructor(tile_scale) {
         this.tile_array = []
         this.tile_scale = tile_scale;
+        this.position = [100, 0];
     }
 
     // Create all the tiles
@@ -46,6 +47,12 @@ class GameMap {
     }
 
     update(input) {
+        // Select a tile
+        if (input.is_mouse_down) {
+            this.select_tile(input.mouse_location[0], input.mouse_location[1]);
+        }
+
+        // Control Zoom
         if (input.wheel_direction < 0) {
             this.scale_map(this.tile_scale + 0.1);
             input.wheel_direction = 0;
@@ -54,5 +61,71 @@ class GameMap {
             this.scale_map(this.tile_scale - 0.1);
             input.wheel_direction = 0;
         }
+
+        // Control Pan
+        if (input.pressed_keys.a) {
+            // TODO: This is inconsistent with how zoom is handled
+            this.position[0] += 2;
+            this.scale_map(this.tile_scale);
+        }
+        if (input.pressed_keys.d) {
+            // TODO: This is inconsistent with how zoom is handled
+            this.position[0] -= 2;
+            this.scale_map(this.tile_scale);
+        }
+        if (input.pressed_keys.w) {
+            // TODO: This is inconsistent with how zoom is handled
+            this.position[1] += 2;
+            this.scale_map(this.tile_scale);
+        }
+                if (input.pressed_keys.s) {
+            // TODO: This is inconsistent with how zoom is handled
+            this.position[1] -= 2;
+            this.scale_map(this.tile_scale);
+        }
+    }
+
+    // For now, turn a selected tile to sand
+    select_tile(x, y) {
+        let tile_index = this.get_tile_index(x, y);
+
+        if (tile_index != null)
+            this.tile_array[tile_index].set_tile_type(2);
+    }
+
+    // Calculate the index of the tile from canvas coordinates
+    get_tile_index(x, y) {
+
+        //x += this.position[0] * GameTile.width * this.tile_scale;
+        //y += this.position[1] * GameTile.height * this.tile_scale;
+
+        // Prevent coordinates from parts of the canvas that do not contain tiles
+        // Multiple combinations of coordinates can be used to reach the same tile index,
+        // So if a user clicks somwhere arbitary, it could select a tile that was not intended
+        if (x < 0 || (x > GameMap.map_width * GameTile.width * this.tile_scale))
+            return null;
+        else if (y < 0 || (y > GameMap.map_height * GameTile.height * this.tile_scale))
+            return null;
+
+        // Adjust the coordinates to find the center of the hexagon
+        x = x - GameTile.width * this.tile_scale / 2;
+        y = y - GameTile.height * this.tile_scale / 2;
+
+        let arr_y = Math.round(y / (GameTile.height - GameTile.height_offset) / this.tile_scale);
+
+        // If the y-index is even, the x tile position is shifted by half a tile width
+        if (arr_y % 2 == 0) {
+            x = x - GameTile.width/2;
+        }
+
+        let arr_x = Math.round(x / GameTile.width / this.tile_scale);
+        
+        let tile_index = arr_x + arr_y * GameMap.map_width;
+
+        // Never allow an illegal index to be returned
+        if (tile_index < 0 || (tile_index > this.tile_array.length - 1))
+            return null;
+
+        return arr_x + arr_y * GameMap.map_width;
     }
 }

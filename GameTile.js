@@ -28,8 +28,11 @@ class GameTile {
             case 1:
                 this.image = document.getElementById('grass_tile');
                 break;
+            case 2:
+                this.image = document.getElementById('sand_tile');
+                break;    
             default:
-                this.image = document.getElementById('grass_tile');
+                this.image = document.getElementById('water_tile');
         }
     }
 
