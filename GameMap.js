@@ -5,7 +5,7 @@ class GameMap {
     constructor(tile_scale) {
         this.tile_array = []
         this.tile_scale = tile_scale;
-        this.position = [100, 0];
+        this.position = [0, 0];
     }
 
     // Create all the tiles
@@ -41,7 +41,7 @@ class GameMap {
                 // TODO: I think GameTile should have a method for resizing rather than explictly touching the variable and 
                 // forcing it to re-calculate its position, this is super janky
                 // I also don't like how we are indexing the array
-                this.tile_array[x + y * GameMap.map_width].set_tile_position(x, y, this.tile_scale)
+                this.tile_array[x + y * GameMap.map_width].set_tile_position(x + this.position[0], y + this.position[1], this.tile_scale)
             }
         }  
     }
@@ -95,9 +95,11 @@ class GameMap {
 
     // Calculate the index of the tile from canvas coordinates
     get_tile_index(x, y) {
-
-        //x += this.position[0] * GameTile.width * this.tile_scale;
-        //y += this.position[1] * GameTile.height * this.tile_scale;
+        
+        // The user clicks on the tile, we must back-calculate the tiles original position to get a consistent conversion
+        // for the array index
+        x = x - this.position[0] * GameTile.width * this.tile_scale;
+        y = y - this.position[1] * (GameTile.height - GameTile.height_offset) * this.tile_scale;
 
         // Prevent coordinates from parts of the canvas that do not contain tiles
         // Multiple combinations of coordinates can be used to reach the same tile index,
