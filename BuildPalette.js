@@ -56,7 +56,7 @@ class BuildPalette {
         let y = 4;
 
         for (const image of global_images) {
-            this.build_palette_ctx.drawImage(image, 0, 0, image.width, image.height, x, y, 32, 32);
+            this.build_palette_ctx.drawImage(image[0], 0, 0, image[0].width, image[0].height, x, y, 32, 32);
 
             counter += 1;
             x += 40;

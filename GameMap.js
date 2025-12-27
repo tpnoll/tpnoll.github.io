@@ -45,13 +45,6 @@ class GameMap {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Temporary function to make random tiles land
-    draw_terrain() {
-        for (const tile of this.tile_array) {
-            tile.set_tile_type(this.getRandomInt(0,1));
-        }
-    }
-
     scale_map(tile_scale) {
         this.tile_scale = tile_scale;
         for (let y = 0; y < GameMap.map_height; y++) {
@@ -103,7 +96,8 @@ class GameMap {
         }
     }
 
-    // For now, turn a selected tile to sand
+    // Select a tile in the game map
+    // TODO: For now, we call set_tile_type
     select_tile(x, y) {
         let tile_index = this.get_tile_index(x, y);
 
