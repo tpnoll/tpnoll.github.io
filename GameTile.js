@@ -3,21 +3,16 @@ class GameTile {
     static height = 32;
     static height_offset = 9;
 
-    constructor(gameWidth, gameHeight, x, y) {
-        this.gameWidth = gameWidth;
-        this.gameHeight = gameHeight;
-        this.x = x;
-        this.y = y;
+    constructor() {
+        this.x = 0;
+        this.y = 0;
         this.image = document.getElementById('water_tile');
     }
-
+    
     // Calculate the game coordinates from the tile's array position
-    set_tile_position(x, y, scale) {
-        if (y % 2 == 0)
-            x = x + 0.5
-        
-        this.x = x * GameTile.width * scale;
-        this.y = y * (GameTile.height - GameTile.height_offset) * scale;
+    set_tile_position(canvas_position) {  
+        this.x = canvas_position[0];
+        this.y = canvas_position[1];
     }
 
     set_tile_type(type) {

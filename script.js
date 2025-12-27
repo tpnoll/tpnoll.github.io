@@ -162,7 +162,7 @@ window.addEventListener('load', function() {
     map0 = new GameMap(2);
     
     // TODO: Pass only canvas width and height
-    map0.generate_map(canvas);
+    map0.generate_map();
     map0.draw_terrain();
 
     // Initialize physics

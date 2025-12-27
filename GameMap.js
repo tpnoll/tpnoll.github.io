@@ -1,6 +1,7 @@
 class GameMap {
     static map_height = 30;
     static map_width = 50;
+    static pan_speed = 20;
 
     constructor(tile_scale) {
         this.tile_array = []
@@ -8,13 +9,31 @@ class GameMap {
         this.position = [0, 0];
     }
 
+    get_canvas_position(array_position) {
+        let canvas_position = [null, null];
+
+        // Shift every other row so hexagons tile correctly
+        if (array_position[1] % 2 == 0)
+            array_position[0] = array_position[0] + 0.5
+        
+        // Calculate the canvas position from (0, 0)
+        canvas_position[0] = array_position[0] * GameTile.width * this.tile_scale;
+        canvas_position[1] = array_position[1] * (GameTile.height - GameTile.height_offset) * this.tile_scale;
+
+        // Shift the tile position by the GameMap position
+        canvas_position[0] += this.position[0];
+        canvas_position[1] += this.position[1];
+
+        return canvas_position;
+    }
+
     // Create all the tiles
-    generate_map(canvas) {
+    generate_map() {
         let new_tile;
         for (let y = 0; y < GameMap.map_height; y++) {
             for (let x = 0; x < GameMap.map_width; x++) {
-                new_tile = new GameTile(canvas.width, canvas.height);
-                new_tile.set_tile_position(x, y, this.tile_scale);
+                new_tile = new GameTile();
+                new_tile.set_tile_position(this.get_canvas_position([x, y]));
                 this.tile_array.push(new_tile);
             }
         }       
@@ -28,7 +47,6 @@ class GameMap {
 
     // Temporary function to make random tiles land
     draw_terrain() {
-        console.log(this.tile_array[0].x);
         for (const tile of this.tile_array) {
             tile.set_tile_type(this.getRandomInt(0,1));
         }
@@ -41,7 +59,7 @@ class GameMap {
                 // TODO: I think GameTile should have a method for resizing rather than explictly touching the variable and 
                 // forcing it to re-calculate its position, this is super janky
                 // I also don't like how we are indexing the array
-                this.tile_array[x + y * GameMap.map_width].set_tile_position(x + this.position[0], y + this.position[1], this.tile_scale)
+                this.tile_array[x + y * GameMap.map_width].set_tile_position(this.get_canvas_position([x, y]))
             }
         }  
     }
@@ -65,22 +83,22 @@ class GameMap {
         // Control Pan
         if (input.pressed_keys.a) {
             // TODO: This is inconsistent with how zoom is handled
-            this.position[0] += 2;
+            this.position[0] += GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
         if (input.pressed_keys.d) {
             // TODO: This is inconsistent with how zoom is handled
-            this.position[0] -= 2;
+            this.position[0] -= GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
         if (input.pressed_keys.w) {
             // TODO: This is inconsistent with how zoom is handled
-            this.position[1] += 2;
+            this.position[1] += GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
                 if (input.pressed_keys.s) {
             // TODO: This is inconsistent with how zoom is handled
-            this.position[1] -= 2;
+            this.position[1] -= GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
     }
@@ -96,10 +114,9 @@ class GameMap {
     // Calculate the index of the tile from canvas coordinates
     get_tile_index(x, y) {
         
-        // The user clicks on the tile, we must back-calculate the tiles original position to get a consistent conversion
-        // for the array index
-        x = x - this.position[0] * GameTile.width * this.tile_scale;
-        y = y - this.position[1] * (GameTile.height - GameTile.height_offset) * this.tile_scale;
+        // Calculate the tiles position if the game map was at (0, 0)
+        x = x - this.position[0];
+        y = y - this.position[1];
 
         // Prevent coordinates from parts of the canvas that do not contain tiles
         // Multiple combinations of coordinates can be used to reach the same tile index,
