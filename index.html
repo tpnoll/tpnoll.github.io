@@ -8,7 +8,8 @@
         <link rel="stylesheet" href="style.css" />   
     </head>
     <body>
-        <canvas id="canvas1"></canvas>
+        <canvas id="game_canvas"></canvas>
+        <canvas id="edit_canvas"></canvas>
         <img id="backgroundImage" src="background.png">
         <img id="water" src="water.gif">
 
@@ -19,9 +20,11 @@
         <img id="sand_tile" src="sand_tile.png">
 
         <script src="script.js"></script>
+        <script src="InputHandler.js"></script>
         <script src="physics.js"></script>
         <script src="GameTile.js"></script>
         <script src="GameMap.js"></script>
+        <script src="BuildPalette.js"></script>
         
         <button id="musicButton" class="top-right">🔇</button>
         <audio id="backgroundMusic" src="music.mp3"></audio>
