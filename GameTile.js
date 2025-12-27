@@ -16,19 +16,10 @@ class GameTile {
     }
 
     set_tile_type(type) {
-        switch (type) {
-            case 0:
-                this.image = document.getElementById('water_tile');
-                break;
-            case 1:
-                this.image = document.getElementById('grass_tile');
-                break;
-            case 2:
-                this.image = document.getElementById('sand_tile');
-                break;    
-            default:
-                this.image = document.getElementById('water_tile');
-        }
+        if (type < global_images.length)
+            this.image = global_images[type];
+        else
+            this.image = document.getElementById('water_tile');
     }
 
     draw(context, scale) {

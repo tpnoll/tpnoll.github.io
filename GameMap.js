@@ -108,7 +108,7 @@ class GameMap {
         let tile_index = this.get_tile_index(x, y);
 
         if (tile_index != null)
-            this.tile_array[tile_index].set_tile_type(2);
+            this.tile_array[tile_index].set_tile_type(BuildPalette.selected_type);
     }
 
     // Calculate the index of the tile from canvas coordinates

@@ -22,7 +22,7 @@ body {
 }
 
 #edit_canvas {
-    background: rgb(186, 50, 50);
+    background: rgb(0, 0, 0);
     position: absolute;
     top: 100px;
     left: 200px;
