@@ -104,6 +104,7 @@ window.addEventListener('load', function() {
         build_palette.update();
 
         // Draw the tiles in the game map
+        // TODO: Make this only call when needed
         for(const tile of map0.tile_array) {
             tile.draw(ctx, map0.tile_scale);
         }

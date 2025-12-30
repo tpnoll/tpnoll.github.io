@@ -1,6 +1,6 @@
 class GameMap {
-    static map_height = 30;
-    static map_width = 50;
+    static map_height = 30; //30; 300x500 too big, so is 100x200 12/30/25
+    static map_width = 50; //50;
     static pan_speed = 20;
 
     constructor(tile_scale) {

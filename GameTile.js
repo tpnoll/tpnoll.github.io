@@ -7,7 +7,7 @@ class GameTile {
         this.x = 0;
         this.y = 0;
         this.image = document.getElementById('water_tile');
-        this.content_image = null;
+        this.content = null;
     }
     
     // Calculate the game coordinates from the tile's array position
@@ -19,11 +19,11 @@ class GameTile {
     set_tile_type(type) {
         if (type < global_images.length) {
             if (global_images[type][1]) {
-                this.content_image = global_images[type][0];
+                this.content = new TileContent(global_images[type][0]);
             }
             else {
                 this.image = global_images[type][0];
-                this.content_image = null;
+                this.content = null;
             }
         }
         else
@@ -31,10 +31,13 @@ class GameTile {
     }
 
     draw(context, scale) {
+        console.log("Are we drawing every tile constantly?")
+
         context.drawImage(this.image, 0, 0, this.image.width, this.image.height, this.x, this.y, GameTile.width * scale, GameTile.height * scale);
         
-        if (this.content_image)
-            context.drawImage(this.content_image, 0, 0, this.content_image.width, this.content_image.height, this.x, this.y, GameTile.width * scale, GameTile.height * scale);
+        // TODO: This drawing should maybe be handeled in the TileContent class, not here
+        if (this.content)
+            context.drawImage(this.content.image, 0, 0, this.content.image.width, this.content.image.height, this.x, this.y, GameTile.width * scale, GameTile.height * scale);
     }
 
 }
