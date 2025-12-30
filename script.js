@@ -1,9 +1,9 @@
 // Wait for all assets to load before executing code
 window.addEventListener('load', function() {
-    const canvas = document.getElementById('game_canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 1920;
-    canvas.height = 1080;
+    
+    // Create Scenes
+    build_palette = new BuildPalette('edit_canvas', [120, 240]);
+    map0 = new GameMap('game_canvas', [1920, 1080]);
     
     const musicButton = this.document.getElementById('musicButton');
     const backgroundMusic = this.document.getElementById('backgroundMusic');
@@ -73,27 +73,13 @@ window.addEventListener('load', function() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Each canvas gets an Input Handler
-    const input = new InputHandler(canvas);
-
-    // Create a build_palette
-    build_palette = new BuildPalette();
-
-    // Initialize background and water
-    const background = new Background(canvas.width, canvas.height);
-
-    map0 = new GameMap(2);
-    
     map0.generate_map();
-
-    // Initialize physics
-    init_physics(canvas.width, canvas.height);
 
     // This function loops to handle animations
     function animate() {
         // Reset the canvas and draw new animations
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //background.draw(ctx);
+        //ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
 
         // Calculate physics
         //physics_iterate(bubble_array, spoon_hitbox, cup);
@@ -102,15 +88,13 @@ window.addEventListener('load', function() {
         // Update Build Palette
         // TODO: We should be able to toggle whether or not this is visible
         build_palette.update();
+        map0.update();
 
         // Draw the tiles in the game map
-        // TODO: Make this only call when needed
-        for(const tile of map0.tile_array) {
-            tile.draw(ctx, map0.tile_scale);
-        }
-
-        // Update the game map
-        map0.update(input);
+        // TODO: Make this only call when needed (It should not be here period)
+        //for(const tile of map0.tile_array) {
+        //    tile.draw(ctx, map0.tile_scale);
+        //}
 
         requestAnimationFrame(animate);
     }

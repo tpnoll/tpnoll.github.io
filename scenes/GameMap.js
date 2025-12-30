@@ -1,11 +1,13 @@
-class GameMap {
+class GameMap extends Scene {
     static map_height = 30; //30; 300x500 too big, so is 100x200 12/30/25
     static map_width = 50; //50;
     static pan_speed = 20;
 
-    constructor(tile_scale) {
-        this.tile_array = []
-        this.tile_scale = tile_scale;
+    constructor(canvas_name, canvas_size) {
+        super(canvas_name, canvas_size);
+
+        this.tile_array = [];
+        this.tile_scale = 2;
         this.position = [0, 0];
     }
 
@@ -32,7 +34,7 @@ class GameMap {
         let new_tile;
         for (let y = 0; y < GameMap.map_height; y++) {
             for (let x = 0; x < GameMap.map_width; x++) {
-                new_tile = new GameTile();
+                new_tile = new GameTile(this);
                 new_tile.set_tile_position(this.get_canvas_position([x, y]));
                 this.tile_array.push(new_tile);
             }
@@ -46,6 +48,9 @@ class GameMap {
     }
 
     scale_map(tile_scale) {
+        // TODO: This clearing should probably not happen here
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
         this.tile_scale = tile_scale;
         for (let y = 0; y < GameMap.map_height; y++) {
             for (let x = 0; x < GameMap.map_width; x++) {
@@ -57,39 +62,39 @@ class GameMap {
         }  
     }
 
-    update(input) {
+    update() {
         // Select a tile
-        if (input.is_mouse_down) {
-            this.select_tile(input.mouse_location[0], input.mouse_location[1]);
+        if (this.input.is_mouse_down) {
+            this.select_tile(this.input.mouse_location[0], this.input.mouse_location[1]);
         }
 
         // Control Zoom
-        if (input.wheel_direction < 0) {
+        if (this.input.wheel_direction < 0) {
             this.scale_map(this.tile_scale + 0.1);
-            input.wheel_direction = 0;
+            this.input.wheel_direction = 0;
         }
-        else if (input.wheel_direction > 0) {
+        else if (this.input.wheel_direction > 0) {
             this.scale_map(this.tile_scale - 0.1);
-            input.wheel_direction = 0;
+            this.input.wheel_direction = 0;
         }
 
         // Control Pan
-        if (input.pressed_keys.a) {
+        if (this.input.pressed_keys.a) {
             // TODO: This is inconsistent with how zoom is handled
             this.position[0] += GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
-        if (input.pressed_keys.d) {
+        if (this.input.pressed_keys.d) {
             // TODO: This is inconsistent with how zoom is handled
             this.position[0] -= GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
-        if (input.pressed_keys.w) {
+        if (this.input.pressed_keys.w) {
             // TODO: This is inconsistent with how zoom is handled
             this.position[1] += GameMap.pan_speed;
             this.scale_map(this.tile_scale);
         }
-                if (input.pressed_keys.s) {
+                if (this.input.pressed_keys.s) {
             // TODO: This is inconsistent with how zoom is handled
             this.position[1] -= GameMap.pan_speed;
             this.scale_map(this.tile_scale);

@@ -1,16 +1,11 @@
 // TODO: I am designing this class on the risky assumption that there will only ever be one instance
-class BuildPalette {
+class BuildPalette extends Scene {
     static width = 120;
     static height = 240;
     static selected_type = 0;
 
-    constructor() {
-        this.build_palette = document.getElementById('edit_canvas');
-        this.build_palette_ctx = this.build_palette.getContext('2d');
-        this.input = new InputHandler(this.build_palette);      
-        
-        this.build_palette.width = BuildPalette.width;
-        this.build_palette.height = BuildPalette.height;
+    constructor(canvas_name, canvas_size) {
+        super(canvas_name, canvas_size);     
 
         this.draw();
     }
@@ -29,13 +24,13 @@ class BuildPalette {
 
             // Drag the canvas around
             if (!this.drag_offset) {
-                const rect = this.build_palette.getBoundingClientRect();
+                const rect = this.canvas.getBoundingClientRect();
                 this.drag_offset = [this.input.screen_location[0] - rect.left, this.input.screen_location[1] - rect.top];
             }
 
-            this.build_palette.style.position = "absolute";
-            this.build_palette.style.left = (this.input.screen_location[0] - this.drag_offset[0]) + "px";
-            this.build_palette.style.top = (this.input.screen_location[1] - this.drag_offset[1]) + "px";
+            this.canvas.style.position = "absolute";
+            this.canvas.style.left = (this.input.screen_location[0] - this.drag_offset[0]) + "px";
+            this.canvas.style.top = (this.input.screen_location[1] - this.drag_offset[1]) + "px";
 
             // Select item to place
             // TODO: These numbers correspond to the ones in draw(), they should all be parameterized
@@ -49,14 +44,14 @@ class BuildPalette {
     }
 
     draw() {
-        this.build_palette_ctx.fillstyle = 'white';
+        this.ctx.fillstyle = 'white';
 
         let counter = 0;
         let x = 4;
         let y = 4;
 
         for (const image of global_images) {
-            this.build_palette_ctx.drawImage(image[0], 0, 0, image[0].width, image[0].height, x, y, 32, 32);
+            this.ctx.drawImage(image[0], 0, 0, image[0].width, image[0].height, x, y, 32, 32);
 
             counter += 1;
             x += 40;

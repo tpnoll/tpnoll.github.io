@@ -3,7 +3,8 @@ class GameTile {
     static height = 32;
     static height_offset = 9;
 
-    constructor() {
+    constructor(parent) {
+        this.parent = parent;
         this.x = 0;
         this.y = 0;
         this.image = document.getElementById('water_tile');
@@ -14,6 +15,9 @@ class GameTile {
     set_tile_position(canvas_position) {  
         this.x = canvas_position[0];
         this.y = canvas_position[1];
+
+        // TODO: We only need to draw here if the tile position actually changes
+        this.draw();
     }
 
     set_tile_type(type) {
@@ -28,10 +32,15 @@ class GameTile {
         }
         else
             this.image = document.getElementById('water_tile');
+
+        // TODO: Only draw when the tile type changes
+        this.draw();
     }
 
-    draw(context, scale) {
-        console.log("Are we drawing every tile constantly?")
+    draw() {
+        // TODO: Should the tile fetch this information every time?
+        let scale = this.parent.tile_scale;
+        let context = this.parent.ctx;
 
         context.drawImage(this.image, 0, 0, this.image.width, this.image.height, this.x, this.y, GameTile.width * scale, GameTile.height * scale);
         
