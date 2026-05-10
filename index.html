@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Empire Game</title>
-        <link rel="stylesheet" href="style.css" />   
-    </head>
-    <body>
-        <canvas id="game_canvas"></canvas>
-        <canvas id="edit_canvas"></canvas>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Curriculum Vitae</h1>
+            <p class="subtitle">Experiences & Projects</p>
+        </header>
 
-        <img id="grass_tile" src="assets/images/grass_tile.png" class="asset">
-        <img id="water_tile" src="assets/images/water_tile.png" class="asset">
-        <img id="sand_tile" src="assets/images/sand_tile.png" class="asset">
-        <img id="mountain_tile" src="assets/images/mountain_tile.png" class="asset">
-        <img id="warrior" src="assets/images/warrior.png" class="asset">
+        <div class="filters">
+            <div class="filter-group">
+                <h3>Filter by Class</h3>
+                <div id="classFilters" class="filter-buttons"></div>
+            </div>
+            <div class="filter-group">
+                <h3>Filter by Type</h3>
+                <div id="typeFilters" class="filter-buttons"></div>
+            </div>
+            <div class="filter-actions">
+                <button id="clearFilters" class="clear-btn">Clear Filters</button>
+                <button id="toggleExpandAll" class="clear-btn">Collapse All</button>
+            </div>
+        </div>
 
-        <script src="script.js"></script>
-        <script src="ImageDictionary.js"></script>
-        <script src="InputHandler.js"></script>
-        <script src="physics.js"></script>
-        <script src="GameTile.js"></script>
-        
-        <script src="scenes/Scene.js"></script>
-        <script src="scenes/GameMap.js"></script>
-        <script src="scenes/BuildPalette.js"></script>
+        <div id="experiences" class="experiences-container"></div>
+    </div>
 
-        <script src="TileContent.js"></script>
-        
-        <button id="musicButton" class="top-right">🔇</button>
-        <audio id="backgroundMusic" src="assets/sounds/music.mp3"></audio>
-        <audio id="popsound" src="assets/sounds/pop.mp3"></audio>
-        <audio id="splashsound" src="assets/sounds/splash.mp3"></audio>
-        <audio id="ring" src="assets/sounds/ring.mp3"></audio>
-
-    </body>
+    <script src="script.js"></script>
+</body>
 </html>
